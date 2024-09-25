@@ -82,4 +82,11 @@ dependencies {
     implementation ("androidx.camera:camera-core:1.3.4")
     implementation ("androidx.camera:camera-lifecycle:1.3.4")
     implementation ("androidx.camera:camera-view:1.3.4")
+
+    // socket
+    // Socket.IO 클라이언트
+    implementation ("io.socket:socket.io-client:2.0.0")
+    // JSON 라이브러리 (필요시 추가)
+    implementation ("org.json:json:20210307")
+
 }
