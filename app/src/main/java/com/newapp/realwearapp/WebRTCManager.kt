@@ -12,7 +12,7 @@ class WebRTCManager {
     private lateinit var videoTrack: VideoTrack
     private lateinit var audioTrack: AudioTrack
     private lateinit var localMediaStream: MediaStream
-    //private var peerConnection: PeerConnection? = null
+    private var peerConnection: PeerConnection? = null
 
     fun initialize(context: Context) {
         // EGL 초기화 (비디오 처리용)
@@ -65,7 +65,7 @@ class WebRTCManager {
 
     fun getEglBaseContext(): EglBase.Context = rootEglBase.eglBaseContext
 
-    /* fun createPeerConnection(iceServers: List<PeerConnection.IceServer>, onIceCandidate: (IceCandidate) -> Unit) {
+    fun createPeerConnection(iceServers: List<PeerConnection.IceServer>, onIceCandidate: (IceCandidate) -> Unit) {
         val rtcConfig = PeerConnection.RTCConfiguration(iceServers)
         peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, object : PeerConnection.Observer {
             override fun onIceCandidate(candidate: IceCandidate) {
@@ -85,21 +85,45 @@ class WebRTCManager {
             override fun onIceGatheringChange(state: PeerConnection.IceGatheringState) {}
             override fun onDataChannel(channel: DataChannel) {}
             override fun onRenegotiationNeeded() {}
+
+            override fun onIceConnectionReceivingChange(receiving: Boolean) {
+                // ICE 연결 상태가 변경될 때 처리
+            }
+
+            // 누락된 메서드 추가
+            override fun onIceCandidatesRemoved(candidates: Array<IceCandidate>) {
+                // ICE 후보가 제거될 때 처리
+            }
+
+
         })
     }
 
     fun setRemoteDescription(description: SessionDescription) {
-        peerConnection.setRemoteDescription(object : SdpObserver {
+        peerConnection?.setRemoteDescription(object : SdpObserver {
             override fun onSetSuccess() {}
             override fun onSetFailure(error: String) {}
+
+            // 누락된 메서드 추가
+            override fun onCreateSuccess(description: SessionDescription) {
+                // SDP 생성 성공 시 처리
+            }
+
+            override fun onCreateFailure(error: String) {
+                // SDP 생성 실패 시 처리
+            }
         }, description)
     }
 
     fun addIceCandidate(candidate: IceCandidate) {
-        peerConnection.addIceCandidate(candidate)
-    } */
+        peerConnection?.addIceCandidate(candidate)
+    }
 
-
+    fun getLocalVideoTrack(): VideoTrack? {
+        return if (::videoTrack.isInitialized) {
+            videoTrack
+        } else {
+            null
+        }
+    }
 }
-
-
